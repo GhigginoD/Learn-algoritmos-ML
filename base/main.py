@@ -55,7 +55,7 @@ def computeLinearRegression(xtrain, ytrain, xtest, ytest):
   plt.show()
 
 def runLinearRegressionExample():
-    X, y = loadDataSet("RegressionLinear/data")
+    X, y = loadDataSet("base/dataSet")
     X = fillMissingData(X)
     X = computeCategorization(X)
     XTrain, XTest, yTrain, yTest = splitTrainTestSets(X, y)

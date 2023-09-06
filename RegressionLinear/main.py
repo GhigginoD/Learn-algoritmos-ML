@@ -4,10 +4,9 @@ import pandas as pd
 
 def loadDataSet(filename:str):
   print('Carregando a base de dados...')
-  baseDeDados = pd.read_csv(f'{filename}.csv', delimiter=';')
+  baseDeDados = pd.read_csv(f'{filename}', delimiter=';')
   x = baseDeDados.iloc[:,:-1].values
   y = baseDeDados.iloc[:,-1].values
-
   return x, y
 
 def fillMissingData(x):
@@ -39,14 +38,16 @@ def splitTrainTestSets(x, y):
   return xtrain, xtest, ytrain, ytest
 
 def computeLinearRegression(xtrain, ytrain, xtest, ytest):
-  import matplotlib.pyplot as plt
   from sklearn.linear_model import LinearRegression
   print('Computando Regressão Linear...')
   regressor = LinearRegression()
   regressor.fit(xtrain, ytrain)
   ypredict = regressor.predict(xtest)
+  return xtest, ytest, ypredict
 
-  print("ok!")
+def handlerPlot(xtest, ytest, ypredict):
+  import matplotlib.pyplot as plt
+  print("Iniciando Gráfico...")
   plt.scatter(xtest[:,-1], ytest, color = 'red')
   plt.plot(xtest[:,-1], ypredict, color='blue')
   plt.title("Inscritos x Visualizações")
@@ -55,11 +56,12 @@ def computeLinearRegression(xtrain, ytrain, xtest, ytest):
   plt.show()
 
 def runLinearRegressionExample():
-    X, y = loadDataSet("base/dataSet")
+    X, y = loadDataSet("RegressionLinear/inscritos.csv")
     X = fillMissingData(X)
     X = computeCategorization(X)
     XTrain, XTest, yTrain, yTest = splitTrainTestSets(X, y)
-    computeLinearRegression(XTrain, yTrain, XTest, yTest)
+    xtest, ytest, ypredict = computeLinearRegression(XTrain, yTrain, XTest, yTest)
+    handlerPlot(xtest, ytest, ypredict)
 
 if __name__ == "__main__":
     runLinearRegressionExample()
